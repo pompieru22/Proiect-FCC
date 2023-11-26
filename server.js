@@ -18,7 +18,7 @@ app.get('/weather', async (req, res) => {
 
   try {
    
-    const url = `http://api.weatherstack.com/current?access_key=${apiKeyWeather}&query=${location}`;
+    const url = "http://api.weatherstack.com/current?access_key=${apiKeyWeather}&query=${location}";
 
    
     const response = await axios.get(url);
@@ -35,7 +35,7 @@ app.get('/historical', async (req, res) => {
     const location = req.query.location || 'New York';
     const historicalDate = req.query.historicalDate || '2015-01-21'; 
   
-    const url = `https://api.weatherstack.com/historical?access_key=${apiKeyWeather}&query=${location}&historical_date=${historicalDate}`;
+    const url = "https://api.weatherstack.com/historical?access_key=${apiKeyWeather}&query=${location}&historical_date=${historicalDate}";
   
     try {
       const response = await axios.get(url);
