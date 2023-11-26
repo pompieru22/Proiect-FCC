@@ -2,7 +2,7 @@
   "name": "proiect",
   "version": "1.0.0",
   "description": "Florea Robert Cristian FCC",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"No tests specified\" && exit 0"
   },
