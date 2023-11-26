@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vizualizare Date Climatice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            position: relative; 
+        }
+
+        #weatherResult {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .button-container {
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin-right: 10px;
+        }
+
+        #location {
+            margin-bottom: 15px;
+            text-align: center; 
+        }
+
+        
+        .small-text {
+            position: absolute;
+            bottom: 10px; 
+            right: 10px; 
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Verifică Vremea</h1>
+    <p>Introdu locația pentru a afla informații despre vremea curentă și istorică.</p>
+
+    <input type="text" id="location" placeholder="Introdu locația">
+
+    <div class="button-container">
+        <button onclick="getWeather()">Verifică Vremea Curentă</button>
+        
+        <button onclick="getHistoricalWeather()">Verifică Vremea Istorică</button>
+    </div>
+
+    <input type="date" id="historicalDate">
+    
+    <div id="weatherResult"></div>
+
+    <div class="small-text">Proiect creat de Florea Robert Cristian</div>
+
+    <script>
+        function getWeather() {
+            const location = document.getElementById('location').value;
+            fetch(`/weather?location=${encodeURIComponent(location)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('weatherResult');
+                    if (data.current) {
+                        resultDiv.innerHTML = `
+                            <strong>Locație:</strong> ${data.location.name}, ${data.location.region}, ${data.location.country} <br>
+                            <strong>Temperatura:</strong> ${data.current.temperature}°C <br>
+                            <strong>Viteza Vântului:</strong> ${data.current.wind_speed} km/h <br>
+                            <strong>Direcția Vântului:</strong> ${data.current.wind_dir} <br>
+                            <strong>Presiune:</strong> ${data.current.pressure} mb <br>
+                            <strong>Precipitații:</strong> ${data.current.precip} mm <br>
+                            <strong>Umiditate:</strong> ${data.current.humidity}% <br>
+                            <strong>Acoperire Nori:</strong> ${data.current.cloudcover}% <br>
+                            <strong>Se simte ca:</strong> ${data.current.feelslike}°C <br>
+                            <strong>Index UV:</strong> ${data.current.uv_index} <br>
+                            <strong>Vizibilitate:</strong> ${data.current.visibility} km <br>
+                            <img src="${data.current.weather_icons[0]}" alt="Weather Icon">
+                        `;
+                    } else {
+                        resultDiv.innerText = 'Informații meteorologice indisponibile pentru această locație.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Eroare:', error);
+                    document.getElementById('weatherResult').innerText = 'Eroare la solicitarea datelor meteorologice.';
+                });
+        }
+
+        function getHistoricalWeather() {
+            const location = document.getElementById('location').value;
+            const historicalDate = document.getElementById('historicalDate').value;
+            fetch(`/historical?location=${encodeURIComponent(location)}&historicalDate=${historicalDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('weatherResult');
+                    if (data.historical && data.historical[historicalDate]) {
+                        const historicalData = data.historical[historicalDate];
+                        resultDiv.innerHTML = `
+                            <strong>Locație:</strong> ${data.location.name}, ${data.location.region}, ${data.location.country} <br>
+                            <strong>Data:</strong> ${historicalDate} <br>
+                            <strong>Temperatura Minimă:</strong> ${historicalData.mintemp}°C <br>
+                            <strong>Temperatura Maximă:</strong> ${historicalData.maxtemp}°C <br>
+                            <strong>Temperatura Medie:</strong> ${historicalData.avgtemp}°C <br>
+                            <strong>Răsărit:</strong> ${historicalData.astro.sunrise} <br>
+                            <strong>Apus:</strong> ${historicalData.astro.sunset} <br>
+                            <img src="${data.current.weather_icons[0]}" alt="Weather Icon">
+                        `;
+                    } else {
+                        resultDiv.innerText = 'Informații meteorologice istorice indisponibile pentru această dată.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Eroare:', error);
+                    document.getElementById('weatherResult').innerText = 'Eroare la solicitarea datelor meteorologice istorice.';
+                });
+        }
+
+    </script>
+</body>
+</html>
