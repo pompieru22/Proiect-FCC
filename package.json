@@ -4,6 +4,7 @@
   "description": "Florea Robert Cristian FCC",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "author": "Florea Robert Cristian FCC",
@@ -13,3 +14,4 @@
     "express": "^4.18.2"
   }
 }
+
