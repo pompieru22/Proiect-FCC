@@ -53,4 +53,4 @@ jobs:
           app-name: 'florearobert-weatherapp'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5165ADF509C344E1A59FCFF2322AA569 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E34386B4CD7947BAA3122CB097B8A964 }}
